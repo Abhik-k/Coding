@@ -1,0 +1,48 @@
+Eventual Safe States
+
+class Solution {
+    
+    Boolean dfs(int node,int vis[],int pathVis[],int check[],List<List<Integer>> adj){
+        vis[node]=1;
+        pathVis[node]=1;
+        check[node]=0;
+        
+        for(int it:adj.get(node)){
+            if(vis[it]==0){
+                if(dfs(it,vis,pathVis,check,adj)==true){
+                    return true;
+                }
+            }
+            else{
+                if(pathVis[it]==1){
+                    return true;
+                }
+            }
+        }
+        check[node]=1;
+        pathVis[node]=0;
+        return false;
+    }
+    
+    List<Integer> eventualSafeNodes(int V, List<List<Integer>> adj) {
+
+        // Your code here
+        int vis[]=new int[V];
+        int pathVis[]=new int[V];
+        int check[]=new int[V];
+        
+        for(int i=0;i<V;i++){
+            if(vis[i]==0){
+                dfs(i,vis,pathVis,check,adj);
+            }
+        }
+        
+        List<Integer> ls =new ArrayList<>();
+        for(int i=0;i<V;i++){
+            if(check[i]==1){
+                ls.add(i);
+            }
+        }
+        return ls;
+    }
+}
